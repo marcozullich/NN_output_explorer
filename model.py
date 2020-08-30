@@ -93,7 +93,7 @@ class Model_MNIST(pl.LightningModule):
     
 
 
-def get_dataloaders(train=True, valid=True, test=True, n_valid=5000, batch_size_train=128, batch_size_valid=128, batch_size_test=128, dataloaders=None, root="./data"):
+def get_dataloaders(train=True, valid=True, test=True, n_valid=5000, batch_size_train=128, batch_size_valid=128, batch_size_test=128, dataloaders=None, root="./data", shuffle_on_train=True):
     if dataloaders is None:
         dataloaders = {}
     if train:
@@ -103,7 +103,7 @@ def get_dataloaders(train=True, valid=True, test=True, n_valid=5000, batch_size_
 
             dataloaders["valid"] = torch.utils.data.DataLoader(dataset_valid, batch_size=batch_size_valid, shuffle=False)
 
-        dataloaders["train"] = torch.utils.data.DataLoader(dataset_train, batch_size=batch_size_train, shuffle=True)
+        dataloaders["train"] = torch.utils.data.DataLoader(dataset_train, batch_size=batch_size_train, shuffle=shuffle_on_train)
     
     if test:
         dataset_test = MNIST(root, train=False, download=True, transform=ToTensor())
