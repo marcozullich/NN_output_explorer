@@ -142,7 +142,7 @@ def main():
         [
             "MNIST training set",
             "MNIST test set",
-            "Da URL",
+            #"Da URL",
             "Da PC",
             "Immagine casuale"
         ]
