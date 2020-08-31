@@ -2,3 +2,6 @@ torch
 torchvision
 pytorch-lightning
 bokeh
+streamlit
+numpy
+Pillow

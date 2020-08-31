@@ -8,8 +8,6 @@ from PIL import Image, ImageOps
 from io import BytesIO
 from torchvision.transforms import ToTensor, ToPILImage
 from torchvision.datasets import MNIST
-import contextlib
-from functools import wraps
 from io import StringIO
 from bokeh.plotting import figure
 import bokeh
@@ -85,10 +83,18 @@ def get_network():
     net.load_state_dict(model_weights)
     return net
 
+@st.cache
+def nn_image():
+    return Image.open("rete neurale.jpg")
+    
+
 
 def main():
 
-    st.sidebar.title("MNIST - rete neurale")
+    st.markdown("## Schema della rete neurale") 
+    st.image(nn_image(), width=300)
+
+    st.sidebar.title("MNIST - rete neurale pre-addestrata")
 
     batch_size = 128
 
