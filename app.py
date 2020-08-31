@@ -72,23 +72,28 @@ def preprocess_image(img):
     img = img.resize((28, 28), Image.LANCZOS)
     return img
 
+@st.cache(allow_output_mutation=True)
+def get_dataloaders(batch_size):
+    MNIST_root = "./data"
+    dataloaders = model.get_dataloaders(root=MNIST_root, batch_size_train=batch_size, batch_size_test=batch_size)
+    return dataloaders
+
+@st.cache
+def get_network():
+    net = model.Model_MNIST()
+    model_weights = torch.load("weights.pt")
+    net.load_state_dict(model_weights)
+    return net
 
 
 def main():
 
     st.sidebar.title("MNIST - rete neurale")
 
-    st.sidebar.markdown("## Caricamento pesi")
-
-    net = model.Model_MNIST()
-    MNIST_root = "./data"
     batch_size = 128
-    dataloaders = model.get_dataloaders(root=MNIST_root, batch_size_train=batch_size, batch_size_test=batch_size)
 
-    # Carichiamo i pesi del modello -- sono già salvati nel file `weigts.pt`
-    model_weights = torch.load("weights.pt")
-    net.load_state_dict(model_weights)
-    del model_weights 
+    dataloaders = get_dataloaders(batch_size)
+    net = get_network()
 
     st.sidebar.markdown("## Testing del modello")
 
@@ -156,7 +161,7 @@ def main():
         st.markdown(f"ID immagine: {img_id}; proveniente da: {img_source}")
 
     elif img_source == "Immagine casuale":
-        img = np.random.randint(0, 255, size=(28, 28))
+        img = np.random.randint(0, 255, size=(28, 28), dtype="uint8")
         img = Image.fromarray(img)
     else:
         if img_source == "Da PC":
